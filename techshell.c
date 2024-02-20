@@ -194,8 +194,11 @@ void ExecuteCommand(struct ShellCommand command)
     }
     if (pid == 0) // using exec calls execute the userInput command (child process)
     {
-        redirection(command);
-        execvp(command.command, command.arguments);
+        redirection(command); // calls the redirection function to handle any requests for such
+        if(execvp(command.command, command.arguments) == -1) // execvp to exectue the command
+        {
+            perror("execvp failed");
+        } // execvp to exectue the command
         exit(EXIT_SUCCESS);
     }
     else
